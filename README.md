@@ -33,7 +33,7 @@ headers.forEach((key, values) => {
   console.log(key, values);
 });
 
-// Outputs:
+// Output:
 // "content-type", ["application/json"]
 // "my-header", ["value-one","value-two"]
 ```
@@ -44,6 +44,12 @@ The `BrowserHeaders` class can be constructed from one of:
 * An instance of `BrowserHeaders`
 * An object consisting of `string->(string|string[])` (e.g. `{"key-a":["one","two"],"key-b":"three"}`) 
 * A `Map<string, string|string[]>`
+
+The constructor takes an additional optional `options` parameter of `{ splitValues: boolean = false }`, where 
+`splitValues` defines whether the header values should be split by comma (`,`) into separate strings - this is useful 
+to unify the `.append` functionality of `Headers` implementations (see the warning at the end of this README). 
+`splitValues` should be used with caution and defaults to `false` because it might split what is actually a single 
+logical value that contained a `,`.
 
 The `BrowserHeaders` class has the following methods:
 
@@ -73,3 +79,29 @@ Otherwise:
 
 #### .appendFromString(str: string): void
 Appends the headers defined in the provided CLRF-delimited string (e.g. `key-a: one\r\nkey-b: two`)
+
+## Warning about .append in native `Headers`
+The `.append` function of the `Headers` class differs significantly between browsers.
+
+Some browsers concatenate the values with `, ` or just `,` and others actually maintain the individual values such that
+they can return later return an array. There is a constructor option 
+```js
+const headers = new Headers();
+headers.append("key-A", "one");
+headers.append("key-A", "two");
+const keyA = headers.get("key-A"); // or .getAll depending on the browser 
+console.log(typeof keyA);
+console.log(keyA);
+
+// Output in Edge 14:
+// string
+// one, two
+
+// Output in Safari 10:
+// string
+// one,two
+
+// Output in Chrome 56:
+// object
+// ["one", "two"]
+```

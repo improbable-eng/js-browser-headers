@@ -196,13 +196,45 @@ describe("browser-headers", () => {
   // Can only test the Headers compatibility if there is a Headers class in this browser
   if (typeof Headers !== "undefined") {
     describe("Headers-compatibility", () => {
-      it("should construct a BrowserHeaders from a Headers instance", () => {
+      it("should construct a BrowserHeaders from a Headers instance and not split the values by default", () => {
         const headers = new Headers();
-        headers.append("keyA", "one");
-        headers.append("keyA", "Two");
+        headers.append("keyA", "one, Two");
         headers.append("keyB", "three");
 
         const browserHeaders = new BrowserHeaders(headers);
+        deepEqual(browserHeaders.get("keyA"), ["one, Two"]);
+        deepEqual(browserHeaders.get("keyB"), ["three"]);
+      });
+
+      it("should construct a BrowserHeaders from a Headers instance and split the values if specified (comma)", () => {
+        const headers = new Headers();
+        headers.append("keyA", "one,Two");
+        headers.append("keyB", "three");
+
+        const browserHeaders = new BrowserHeaders(headers, {splitValues: true});
+        deepEqual(browserHeaders.get("keyA"), ["one", "Two"]);
+        deepEqual(browserHeaders.get("keyB"), ["three"]);
+      });
+
+      it("should construct a BrowserHeaders from a Headers instance and split the values if specified (comma + space)", () => {
+        const headers = new Headers();
+        headers.append("keyA", "one, Two");
+        headers.append("keyB", "three");
+
+        const browserHeaders = new BrowserHeaders(headers, {splitValues: true});
+        deepEqual(browserHeaders.get("keyA"), ["one", "Two"]);
+        deepEqual(browserHeaders.get("keyB"), ["three"]);
+      });
+
+      /* This test uses separate append calls for `keyA`, which in some browsers joins the strings with a comma. By
+       setting splitValues to true, this test checks that this browser-specific detail can be abstracted. */
+      it("should construct a BrowserHeaders from a Headers instance and split the values if specified - separate appends", () => {
+        const headers = new Headers();
+        headers.append("keyA", "one");
+        headers.append("keya", "Two");
+        headers.append("keyB", "three");
+
+        const browserHeaders = new BrowserHeaders(headers, {splitValues: true});
         deepEqual(browserHeaders.get("keyA"), ["one", "Two"]);
         deepEqual(browserHeaders.get("keyB"), ["three"]);
       });
