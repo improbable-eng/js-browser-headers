@@ -8,6 +8,7 @@ export declare interface WindowHeaders {
   delete(key: string): void;
   keys(): any;
   entries(): any;
+  forEach(callback: (value: string, key: string) => void): any;
   append(key: string, value: string): void;
   set(key: string, value: string): void;
   [Symbol.iterator]: () => Iterator<string>,
@@ -24,7 +25,12 @@ function getHeaderValues(headers: WindowHeaders, key: string): string[] {
   }
 
   // There is no getAll() function so get *should* return an array
-  return headers.get(key);
+  const getValue = headers.get(key);
+  if (getValue && typeof getValue === "string") {
+    // some .get() implementations return a string even though they don't have a .getAll() - notably Microsoft Edge
+    return [getValue];
+  }
+  return getValue;
 }
 
 // getHeaderKeys returns an array of keys in a headers instance
@@ -40,8 +46,16 @@ function getHeaderKeys(headers: WindowHeaders): string[] {
         keys.push(key);
       }
     }
+  } else if (headers.forEach) {
+    headers.forEach((_, key) => {
+      if (!asMap[key]) {
+        // Only add the key if it hasn't been added already
+        asMap[key] = true;
+        keys.push(key);
+      }
+    });
   } else {
-    // If keys() isn't available then fallback to iterating through headers
+    // If keys() and forEach() aren't available then fallback to iterating through headers
     for (let entry of headers) {
       const key = entry[0];
       if (!asMap[key]) {
@@ -54,6 +68,17 @@ function getHeaderKeys(headers: WindowHeaders): string[] {
   return keys;
 }
 
+function splitHeaderValue(str: string) {
+  const values = [];
+  const commaSpaceValues = value.split(", ");
+  commaSpaceValues.forEach(commaSpaceValue => {
+    commaSpaceValue.split(",").forEach(commaValue => {
+      values.push(commaValue);
+    });
+  });
+  return values;
+}
+
 export type HeaderObject = {[key: string]: string|string[]};
 export type HeaderMap = Map<string,string|string[]>;
 
@@ -61,7 +86,7 @@ export type HeaderMap = Map<string,string|string[]>;
 export default class BrowserHeaders {
   keyValueMap: {[key: string]: string[]};
 
-  constructor(init?: HeaderObject | HeaderMap | BrowserHeaders | WindowHeaders | string) {
+  constructor(init: HeaderObject | HeaderMap | BrowserHeaders | WindowHeaders | string = "", options: {splitValues: boolean} = { splitValues: false } ) {
     this.keyValueMap = {};
 
     if (init) {
@@ -70,7 +95,11 @@ export default class BrowserHeaders {
         keys.forEach(key => {
           const values = getHeaderValues(init as WindowHeaders, key);
           values.forEach(value => {
-            this.append(key, value)
+            if (options.splitValues) {
+              this.append(key, splitHeaderValue(value));
+            } else {
+              this.append(key, value);
+            }
           });
         });
       } else if (init instanceof BrowserHeaders) {
