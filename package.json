@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "main": "lib/index.js",
   "repository": "https://github.com/improbable-eng/js-browser-headers",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "keywords": [
     "headers",
     "fetch"
