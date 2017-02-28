@@ -69,12 +69,14 @@ Appends the value(s) to specified `key`.
 #### .delete(key: string, value: string): void
 If the `value` is specified: 
     Removes the specified `value` from the `key` if it is present.
+
 Otherwise:
     Removes all values for the `key` if it is present.
 
 #### .has(key: string, value?: string): boolean
 If the value is specified: 
     Returns true if the `key` contains the corresponding `value`.
+
 Otherwise:
     Returns true if the `key` has at least one value.
 
@@ -84,7 +86,7 @@ Appends the headers defined in the provided CLRF-delimited string (e.g. `key-a: 
 ## Warning about `.append` in native `Headers`
 The `.append` function of the `Headers` class differs significantly between browsers.
 
-Some browsers concatenate the values with `, ` or just `,` and others actually maintain the individual values such that
+Some browsers concatenate the values with `", "` or just `","` and others actually maintain the individual values such that
 they can return later return an array. There is a constructor option 
 ```js
 const headers = new Headers();
