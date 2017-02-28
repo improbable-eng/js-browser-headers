@@ -21,11 +21,22 @@ module.exports = function(config) {
       browserName: 'firefox',
       platform: 'linux'
     },
+    'SL_Edge': {
+      base: 'SauceLabs',
+      browserName: 'edge',
+      platform: 'Windows 10'
+    },
     'SL_IE10': {
       base: 'SauceLabs',
       browserName: 'internet explorer',
       platform: 'Windows 7',
       version: '10'
+    },
+    'SL_IE8': {
+      base: 'SauceLabs',
+      browserName: 'internet explorer',
+      platform: 'Windows XP',
+      version: '8.0'
     }
   };
 
