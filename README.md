@@ -10,14 +10,14 @@ This package is written in TypeScript, but is designed to be used just as easily
 [![build status](https://secure.travis-ci.org/improbable-eng/js-browser-headers.png)](https://travis-ci.org/improbable-eng/js-browser-headers)
 
 ## Installation
-via npm as an ES5/ES6 module:
+via npm:
 
 ```bash
 $ npm install browser-headers
 ```
 
 ## Browser Support
-This library is tested against Chrome, Safari, Firefox, Edge, IE 10 and IE 8.
+This library is tested against Chrome, Safari, Firefox, Opera, Edge, IE 10 and IE 9.
 
 ## API
 
@@ -38,7 +38,10 @@ headers.forEach((key, values) => {
 // "my-header", ["value-one","value-two"]
 ```
 
-The `BrowserHeaders` class can be constructed from one of:
+The `BrowserHeaders` class has the following methods:
+
+#### constructor(init: Headers | {[key: string]: string|string[]} | Map<string,string|string[]> | string | BrowserHeaders, options: {splitValues: boolean}): string[]
+`init` can be one of:
 * An instance of `Headers`
 * A CLRF-delimited string (e.g. `key-a: one\r\nkey-b: two`)
 * An instance of `BrowserHeaders`
@@ -50,8 +53,6 @@ The constructor takes an additional optional `options` parameter of `{ splitValu
 to unify the `.append` functionality of `Headers` implementations (see the warning at the end of this README). 
 `splitValues` should be used with caution and defaults to `false` because it might split what is actually a single 
 logical value that contained a `,`.
-
-The `BrowserHeaders` class has the following methods:
 
 #### .get(key: string): string[]
 Returns all of the values for that header `key` as an array
@@ -80,7 +81,7 @@ Otherwise:
 #### .appendFromString(str: string): void
 Appends the headers defined in the provided CLRF-delimited string (e.g. `key-a: one\r\nkey-b: two`)
 
-## Warning about .append in native `Headers`
+## Warning about `.append` in native `Headers`
 The `.append` function of the `Headers` class differs significantly between browsers.
 
 Some browsers concatenate the values with `, ` or just `,` and others actually maintain the individual values such that
