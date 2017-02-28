@@ -7,6 +7,8 @@ This package intends to provide a wrapper for the `Headers` class to ensure a co
 
 This package is written in TypeScript, but is designed to be used just as easily by JavaScript projects.
 
+[![build status](https://secure.travis-ci.org/improbable-eng/js-browser-headers.png)](https://travis-ci.org/improbable-eng/js-browser-headers)
+
 ## Installation
 via npm as an ES5/ES6 module:
 
