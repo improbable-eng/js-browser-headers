@@ -8,6 +8,7 @@ export declare interface WindowHeaders {
   delete(key: string): void;
   keys(): any;
   entries(): any;
+  forEach(callback: (value: string, key: string) => void): any;
   append(key: string, value: string): void;
   set(key: string, value: string): void;
   [Symbol.iterator]: () => Iterator<string>,
@@ -40,8 +41,16 @@ function getHeaderKeys(headers: WindowHeaders): string[] {
         keys.push(key);
       }
     }
+  } else if (headers.forEach) {
+    headers.forEach((value, key) => {
+      if (!asMap[key]) {
+        // Only add the key if it hasn't been added already
+        asMap[key] = true;
+        keys.push(key);
+      }
+    });
   } else {
-    // If keys() isn't available then fallback to iterating through headers
+    // If keys() and forEach() aren't available then fallback to iterating through headers
     for (let entry of headers) {
       const key = entry[0];
       if (!asMap[key]) {
