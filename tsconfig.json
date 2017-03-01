@@ -18,7 +18,8 @@
   },
   "types": [],
   "include": [
-    "src"
+    "src",
+    "src/iterateHeaders"
   ],
   "exclude": [
     "node_modules"

@@ -10,9 +10,9 @@
   ],
   "scripts": {
     "prepublish": "npm run clean && npm run build:lib",
-    "clean": "rm -rf build/*",
+    "clean": "rm -rf build/* && rm -rf lib/*",
     "build:test": "webpack",
-    "build:lib": "mkdir -p lib && tsc && cp -R build/* lib",
+    "build:lib": "npm run clean && mkdir -p lib && tsc && mkdir -p build/js && cp -R src/js/*.js build/js && cp -R build/* lib",
     "lint": "tslint -c ./tslint.json ./src/**/*.ts ./test/**/*.ts",
     "test": "npm run build:test && karma start --single-run",
     "release": "./release.sh ${npm_package_version}"
