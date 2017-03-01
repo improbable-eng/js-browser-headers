@@ -9,5 +9,4 @@ export declare interface WindowHeaders {
   forEach(callback: (value: string, key: string) => void): any;
   append(key: string, value: string): void;
   set(key: string, value: string): void;
-  [Symbol.iterator]: () => Iterator<string>,
 }

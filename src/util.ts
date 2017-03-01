@@ -1,4 +1,5 @@
 import { WindowHeaders } from "./WindowHeaders";
+import { iterateHeaders, iterateHeadersKeys } from "./iterateHeaders";
 
 // Declare that there is a global property named "Headers" - this might not be present at runtime
 declare const Headers: any;
@@ -46,13 +47,13 @@ export function getHeaderKeys(headers: WindowHeaders): string[] {
   const keys: string[] = [];
 
   if (headers.keys) {
-    for (let key of headers.keys()) {
+    iterateHeadersKeys(headers, key => {
       if (!asMap[key]) {
         // Only add the key if it hasn't been added already
         asMap[key] = true;
         keys.push(key);
       }
-    }
+    });
   } else if (headers.forEach) {
     headers.forEach((_, key) => {
       if (!asMap[key]) {
@@ -63,14 +64,14 @@ export function getHeaderKeys(headers: WindowHeaders): string[] {
     });
   } else {
     // If keys() and forEach() aren't available then fallback to iterating through headers
-    for (let entry of headers) {
+    iterateHeaders(headers, (entry: string[]) => {
       const key = entry[0];
       if (!asMap[key]) {
         // Only add the key if it hasn't been added already
         asMap[key] = true;
         keys.push(key);
       }
-    }
+    });
   }
   return keys;
 }
