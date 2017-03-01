@@ -11,27 +11,27 @@
   "scripts": {
     "prepublish": "npm run clean && npm run build:lib",
     "clean": "rm -rf build/*",
-    "build:test": "mkdir -p build && cd test && tsc && browserify ./build/test/*.spec.js -o ./build/integration-tests.js --debug -t [ babelify ]",
+    "build:test": "webpack",
     "build:lib": "mkdir -p lib && tsc && cp -R build/* lib",
     "lint": "tslint -c ./tslint.json ./src/**/*.ts ./test/**/*.ts",
     "test": "npm run build:test && karma start --single-run",
-    "test:dev": "karma start",
     "release": "./release.sh ${npm_package_version}"
   },
   "devDependencies": {
     "@types/node": "^7.0.5",
     "assert": "^1.4.1",
-    "babel-cli": "^6.11.4",
+    "babel-core": "^6.23.1",
+    "babel-loader": "^6.3.2",
     "babel-preset-es2015": "^6.13.2",
-    "babelify": "^7.3.0",
-    "browserify": "^14.1.0",
-    "jasmine": "^2.4.1",
     "jasmine-core": "^2.4.1",
     "karma": "^1.2.0",
     "karma-jasmine": "^1.0.2",
     "karma-sauce-launcher": "^1.0.0",
+    "karma-sourcemap-loader": "^0.3.7",
+    "ts-loader": "^2.0.1",
     "tslint": "^4.4.2",
-    "typescript": "^2.2.1"
+    "typescript": "^2.2.1",
+    "webpack": "^2.2.1"
   },
   "dependencies": {}
 }
