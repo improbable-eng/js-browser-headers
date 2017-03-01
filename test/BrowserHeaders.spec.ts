@@ -186,7 +186,7 @@ describe("browser-headers", () => {
       browserHeaders.forEach((key, values) => {
         visited.push(key + "." + values.join(","));
       });
-      deepEqual(visited,[
+      deepEqual(visited, [
         "keya.one,Two",
         "keyb.three,four",
       ]);
@@ -245,8 +245,8 @@ describe("browser-headers", () => {
   if (typeof Map !== "undefined") {
     describe("Headers-compatibility", () => {
       it("should construct a BrowserHeaders from a Map", () => {
-        const map = new Map<string,string|string[]>();
-        map.set("keyA", ["one","Two"]);
+        const map = new Map<string, string|string[]>();
+        map.set("keyA", ["one", "Two"]);
         map.set("keyB", "three");
 
         const browserHeaders = new BrowserHeaders(map);

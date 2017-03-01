@@ -80,7 +80,7 @@ function splitHeaderValue(str: string) {
 }
 
 export type HeaderObject = {[key: string]: string|string[]};
-export type HeaderMap = Map<string,string|string[]>;
+export type HeaderMap = Map<string, string|string[]>;
 
 // BrowserHeaders is a wrapper class for Headers
 export default class BrowserHeaders {
@@ -108,7 +108,7 @@ export default class BrowserHeaders {
         });
       } else if (typeof Map !== "undefined" && init instanceof Map) {
         const asMap = init as HeaderMap;
-        asMap.forEach((value: string|string[], key:string) => {
+        asMap.forEach((value: string|string[], key: string) => {
           this.append(key, value);
         });
       } else if (typeof init === "string") {
