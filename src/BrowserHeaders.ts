@@ -69,8 +69,8 @@ function getHeaderKeys(headers: WindowHeaders): string[] {
 }
 
 function splitHeaderValue(str: string) {
-  const values = [];
-  const commaSpaceValues = value.split(", ");
+  const values: string[] = [];
+  const commaSpaceValues = str.split(", ");
   commaSpaceValues.forEach(commaSpaceValue => {
     commaSpaceValue.split(",").forEach(commaValue => {
       values.push(commaValue);
