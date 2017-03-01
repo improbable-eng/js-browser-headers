@@ -1,86 +1,11 @@
-import { normalizeName, normalizeValue } from "./util";
-
-// Declare the class that *might* be present in the browser
-export declare interface WindowHeaders {
-  get(key: string): string[]; // in some browsers .get returns a single string
-  getAll(key: string): string[]; // some browsers don't have a .getAll
-  has(key: string): boolean;
-  delete(key: string): void;
-  keys(): any;
-  entries(): any;
-  forEach(callback: (value: string, key: string) => void): any;
-  append(key: string, value: string): void;
-  set(key: string, value: string): void;
-  [Symbol.iterator]: () => Iterator<string>,
-}
-
-// Declare that there is a global property named "Headers" - this might not be present at runtime
-declare const Headers: any;
-
-// getHeadersValues abstracts the difference between get() and getAll() between browsers and always returns an array
-function getHeaderValues(headers: WindowHeaders, key: string): string[] {
-  if (headers instanceof Headers && headers.getAll) {
-    // If the headers instance has a getAll function then it will return an array
-    return headers.getAll(key);
-  }
-
-  // There is no getAll() function so get *should* return an array
-  const getValue = headers.get(key);
-  if (getValue && typeof getValue === "string") {
-    // some .get() implementations return a string even though they don't have a .getAll() - notably Microsoft Edge
-    return [getValue];
-  }
-  return getValue;
-}
-
-// getHeaderKeys returns an array of keys in a headers instance
-function getHeaderKeys(headers: WindowHeaders): string[] {
-  const asMap: {[key: string]: boolean} = {};
-  const keys: string[] = [];
-
-  if (headers.keys) {
-    for (let key of headers.keys()) {
-      if (!asMap[key]) {
-        // Only add the key if it hasn't been added already
-        asMap[key] = true;
-        keys.push(key);
-      }
-    }
-  } else if (headers.forEach) {
-    headers.forEach((_, key) => {
-      if (!asMap[key]) {
-        // Only add the key if it hasn't been added already
-        asMap[key] = true;
-        keys.push(key);
-      }
-    });
-  } else {
-    // If keys() and forEach() aren't available then fallback to iterating through headers
-    for (let entry of headers) {
-      const key = entry[0];
-      if (!asMap[key]) {
-        // Only add the key if it hasn't been added already
-        asMap[key] = true;
-        keys.push(key);
-      }
-    }
-  }
-  return keys;
-}
-
-function splitHeaderValue(str: string) {
-  const values: string[] = [];
-  const commaSpaceValues = str.split(", ");
-  commaSpaceValues.forEach(commaSpaceValue => {
-    commaSpaceValue.split(",").forEach(commaValue => {
-      values.push(commaValue);
-    });
-  });
-  return values;
-}
+import {normalizeName, normalizeValue, getHeaderValues, getHeaderKeys, splitHeaderValue } from "./util";
+import { WindowHeaders } from "./WindowHeaders";
 
 export type HeaderObject = {[key: string]: string|string[]};
 export type HeaderMap = Map<string, string|string[]>;
+
+// Declare that there is a global property named "Headers" - this might not be present at runtime
+declare const Headers: any;
 
 // BrowserHeaders is a wrapper class for Headers
 export default class BrowserHeaders {
