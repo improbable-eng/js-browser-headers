@@ -1,7 +1,6 @@
 import { normalizeName, normalizeValue, getHeaderValues, getHeaderKeys, splitHeaderValue } from "./util";
 import { WindowHeaders } from "./WindowHeaders";
 
-/** @internal */
 export interface Map<K, V> {
   clear(): void;
   delete(key: K): boolean;
