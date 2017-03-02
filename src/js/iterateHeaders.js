@@ -18,6 +18,6 @@ function iterateHeadersKeys(headers, callback) {
 }
 
 module.exports = {
-  iterateHeaders,
-  iterateHeadersKeys,
+  iterateHeaders: iterateHeaders,
+  iterateHeadersKeys: iterateHeadersKeys
 };
