@@ -4,7 +4,7 @@
     "sourceMap": true,
     "declaration": true,
     "declarationDir": "build",
-    "target": "es6",
+    "target": "es5",
     "removeComments": true,
     "noImplicitReturns": true,
     "noImplicitAny": true,
@@ -18,7 +18,8 @@
   },
   "types": [],
   "include": [
-    "src"
+    "src",
+    "src/iterateHeaders"
   ],
   "exclude": [
     "node_modules"
