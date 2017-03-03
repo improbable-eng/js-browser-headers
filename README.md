@@ -87,7 +87,8 @@ Appends the headers defined in the provided CLRF-delimited string (e.g. `key-a: 
 The `.append` function of the `Headers` class differs significantly between browsers.
 
 Some browsers concatenate the values with `", "` or just `","` and others actually maintain the individual values such that
-they can return later return an array. There is a constructor option 
+they can return later return an array. There is a constructor option (see above: `splitValues`) that can be enabled to
+attempt to parse these concatenated strings back into individual values.
 ```js
 const headers = new Headers();
 headers.append("key-A", "one");
