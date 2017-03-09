@@ -1,6 +1,7 @@
-import BrowserHeaders from "../src/BrowserHeaders";
+import { BrowserHeaders } from "../src/BrowserHeaders";
+import { getHeaderValues } from "../src/util";
 
-const { deepEqual } = require("assert");
+const { deepEqual, ok } = require("assert");
 
 declare function describe(name: string, test: () => void): void;
 declare function it(name: string, test: () => void): void;
@@ -201,7 +202,7 @@ describe("browser-headers", () => {
       browserHeaders.append("keyA", ["one", "Two"]);
       browserHeaders.append("keyB", ["three", "four"]);
       const visited: string[] = [];
-      browserHeaders.forEach((key, values) => {
+      browserHeaders.forEach((key: string, values: string[]) => {
         visited.push(key + "." + values.join(","));
       });
       deepEqual(visited, [
@@ -255,6 +256,25 @@ describe("browser-headers", () => {
         const browserHeaders = new BrowserHeaders(headers, {splitValues: true});
         deepEqual(browserHeaders.get("keyA"), ["one", "Two"]);
         deepEqual(browserHeaders.get("keyB"), ["three"]);
+      });
+
+      describe("toHeaders", () => {
+        it("should return a Headers instance that contains the same headers", () => {
+          const browserHeaders = new BrowserHeaders({
+            "keyA": ["one", "Two"],
+            "keyB": "three"
+          });
+          const headers = browserHeaders.toHeaders();
+          const keyA = getHeaderValues(headers, "keyA");
+
+          // The value of keyA is one of ["one", "Two"], ["one,Two"] or ["one, Two"] depending on whether or not the
+          // `.append` function of the current browser's Header class concatenates and what it joins by.
+
+          // Join the array by ", " so that the value(s) should now be either separated by ", " or just ","
+          const keyAString = keyA.join(", ");
+          ok(keyAString === "one, Two" || keyAString === "one,Two");
+          deepEqual(getHeaderValues(headers, "keyB"), ["three"]);
+        });
       });
     });
   }
