@@ -161,15 +161,17 @@ export class BrowserHeaders {
   }
   
   toHeaders(): WindowHeaders {
-    const headers: WindowHeaders = new Headers();
-    
-    this.forEach((key, values) => {
-      values.forEach(value => {
-        headers.append(key, value);
+    if (typeof Headers !== "undefined") {
+      const headers: WindowHeaders = new Headers();
+      this.forEach((key, values) => {
+        values.forEach(value => {
+          headers.append(key, value);
+        });
       });
-    });
-    
-    return headers;
+      return headers;
+    } else {
+      throw new Error("Headers class is not defined");
+    }
   }
 }
 
