@@ -83,6 +83,10 @@ Otherwise:
 #### .appendFromString(str: string): void
 Appends the headers defined in the provided CLRF-delimited string (e.g. `key-a: one\r\nkey-b: two`)
 
+#### .toHeaders(): Headers
+Returns an instance of the browser's `Headers` class. This will throw an exception if the current browser does not have
+the `Headers` class.
+
 ## Warning about `.append` in native `Headers`
 The `.append` function of the `Headers` class differs significantly between browsers.
 

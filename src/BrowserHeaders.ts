@@ -19,17 +19,14 @@ interface MapConstructor {
 
 declare const Map: MapConstructor;
 
-export type HeaderObject = {[key: string]: string|string[]};
-export type HeaderMap = Map<string, string|string[]>;
-
 // Declare that there is a global property named "Headers" - this might not be present at runtime
 declare const Headers: any;
 
 // BrowserHeaders is a wrapper class for Headers
-export default class BrowserHeaders {
+export class BrowserHeaders {
   keyValueMap: {[key: string]: string[]};
 
-  constructor(init: HeaderObject | HeaderMap | BrowserHeaders | WindowHeaders | string = "", options: {splitValues: boolean} = { splitValues: false } ) {
+  constructor(init: BrowserHeaders.ConstructorArg = {}, options: {splitValues: boolean} = { splitValues: false } ) {
     this.keyValueMap = {};
 
     if (init) {
@@ -46,11 +43,11 @@ export default class BrowserHeaders {
           });
         });
       } else if (init instanceof BrowserHeaders) {
-        init.forEach((key, values) => {
+        (init as BrowserHeaders).forEach((key, values) => {
           this.append(key, values)
         });
       } else if (typeof Map !== "undefined" && init instanceof Map) {
-        const asMap = init as HeaderMap;
+        const asMap = init as BrowserHeaders.HeaderMap;
         asMap.forEach((value: string|string[], key: string) => {
           this.append(key, value);
         });
@@ -58,7 +55,7 @@ export default class BrowserHeaders {
         this.appendFromString(init);
       } else if (typeof init === "object") {
         Object.getOwnPropertyNames(init).forEach(key => {
-          const asObject = init as HeaderObject;
+          const asObject = init as BrowserHeaders.HeaderObject;
           const values = asObject[key];
           if (Array.isArray(values)) {
             values.forEach(value => {
@@ -162,4 +159,22 @@ export default class BrowserHeaders {
         callback(key, this.keyValueMap[key]);
       }, this);
   }
+  
+  toHeaders(): WindowHeaders {
+    const headers: WindowHeaders = new Headers();
+    
+    this.forEach((key, values) => {
+      values.forEach(value => {
+        headers.append(key, value);
+      });
+    });
+    
+    return headers;
+  }
+}
+
+export namespace BrowserHeaders {
+  export type HeaderObject = {[key: string]: string|string[]};
+  export type HeaderMap = Map<string, string|string[]>;
+  export type ConstructorArg = HeaderObject | HeaderMap | BrowserHeaders | WindowHeaders | string;
 }

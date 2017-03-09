@@ -1,3 +1,1 @@
-import BrowserHeaders from "./BrowserHeaders";
-
-export default BrowserHeaders;
+export { BrowserHeaders } from "./BrowserHeaders";
