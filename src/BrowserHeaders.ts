@@ -35,8 +35,6 @@ export class BrowserHeaders {
   constructor(init: BrowserHeaders.ConstructorArg = {}, options: {splitValues: boolean} = { splitValues: false } ) {
     this.headersMap = {};
 
-    console.log("BrowserHeaders.init", init, BrowserHeaders);
-
     if (init) {
       if (typeof Headers !== "undefined" && init instanceof Headers) {
         const keys = getHeaderKeys(init as WindowHeaders);
