@@ -22,12 +22,20 @@ declare const Map: MapConstructor;
 // Declare that there is a global property named "Headers" - this might not be present at runtime
 declare const Headers: any;
 
+// isBrowserHeaders is used to check if an argument is an instance of BrowserHeaders from another 
+// version of the dependency.
+function isBrowserHeaders(arg: any): arg is BrowserHeaders {
+  return typeof arg === "object" && typeof arg.headersMap === "object" && typeof arg.forEach === "function"
+}
+
 // BrowserHeaders is a wrapper class for Headers
 export class BrowserHeaders {
-  keyValueMap: {[key: string]: string[]};
+  headersMap: {[key: string]: string[]};
 
   constructor(init: BrowserHeaders.ConstructorArg = {}, options: {splitValues: boolean} = { splitValues: false } ) {
-    this.keyValueMap = {};
+    this.headersMap = {};
+
+    console.log("BrowserHeaders.init", init, BrowserHeaders);
 
     if (init) {
       if (typeof Headers !== "undefined" && init instanceof Headers) {
@@ -42,8 +50,8 @@ export class BrowserHeaders {
             }
           });
         });
-      } else if (init instanceof BrowserHeaders) {
-        (init as BrowserHeaders).forEach((key, values) => {
+      } else if (isBrowserHeaders(init)) {
+        init.forEach((key, values) => {
           this.append(key, values)
         });
       } else if (typeof Map !== "undefined" && init instanceof Map) {
@@ -86,9 +94,9 @@ export class BrowserHeaders {
   delete(key: string, value?: string): void {
     const normalizedKey = normalizeName(key);
     if (value === undefined) {
-      delete this.keyValueMap[normalizedKey];
+      delete this.headersMap[normalizedKey];
     } else {
-      const existing = this.keyValueMap[normalizedKey];
+      const existing = this.headersMap[normalizedKey];
       if (existing) {
         const index = existing.indexOf(value);
         if (index >= 0) {
@@ -96,7 +104,7 @@ export class BrowserHeaders {
         }
         if (existing.length === 0) {
           // The last value was removed - remove the key
-          delete this.keyValueMap[normalizedKey];
+          delete this.headersMap[normalizedKey];
         }
       }
     }
@@ -104,15 +112,15 @@ export class BrowserHeaders {
 
   append(key: string, value: string | string[]): void {
     const normalizedKey = normalizeName(key);
-    if (!Array.isArray(this.keyValueMap[normalizedKey])) {
-      this.keyValueMap[normalizedKey] = [];
+    if (!Array.isArray(this.headersMap[normalizedKey])) {
+      this.headersMap[normalizedKey] = [];
     }
     if (Array.isArray(value)) {
       value.forEach(arrayValue => {
-        this.keyValueMap[normalizedKey].push(normalizeValue(arrayValue));
+        this.headersMap[normalizedKey].push(normalizeValue(arrayValue));
       });
     } else {
-      this.keyValueMap[normalizedKey].push(normalizeValue(value));
+      this.headersMap[normalizedKey].push(normalizeValue(value));
     }
   }
 
@@ -124,14 +132,14 @@ export class BrowserHeaders {
       value.forEach(arrayValue => {
         normalized.push(normalizeValue(arrayValue));
       });
-      this.keyValueMap[normalizedKey] = normalized;
+      this.headersMap[normalizedKey] = normalized;
     } else {
-      this.keyValueMap[normalizedKey] = [normalizeValue(value)];
+      this.headersMap[normalizedKey] = [normalizeValue(value)];
     }
   }
 
   has(key: string, value?: string): boolean {
-    const keyArray = this.keyValueMap[normalizeName(key)];
+    const keyArray = this.headersMap[normalizeName(key)];
     const keyExists = Array.isArray(keyArray);
     if (!keyExists) {
       return false;
@@ -145,7 +153,7 @@ export class BrowserHeaders {
   }
 
   get(key: string): string[] {
-    const values = this.keyValueMap[normalizeName(key)];
+    const values = this.headersMap[normalizeName(key)];
     if (values !== undefined) {
       return values.concat();
     }
@@ -154,9 +162,9 @@ export class BrowserHeaders {
 
   // forEach iterates through the keys and calls the callback with the key and *all* of it's values as an array
   forEach(callback: (key: string, values: string[]) => void): void {
-    Object.getOwnPropertyNames(this.keyValueMap)
+    Object.getOwnPropertyNames(this.headersMap)
       .forEach(key => {
-        callback(key, this.keyValueMap[key]);
+        callback(key, this.headersMap[key]);
       }, this);
   }
   
