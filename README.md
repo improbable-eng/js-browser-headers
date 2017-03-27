@@ -1,13 +1,17 @@
 # browser-headers
 > Compatibility Layer for the Headers class
 
+[![Master Build](https://travis-ci.org/improbable-eng/js-browser-headers.svg?branch=master)](https://travis-ci.org/improbable-eng/js-browser-headers)
+[![NPM](https://img.shields.io/npm/v/browser-headers.svg)](https://www.npmjs.com/package/browser-headers)
+[![Apache 2.0 License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+![quality: beta](https://img.shields.io/badge/quality-beta-yellow.svg)
+
 The [Headers](https://fetch.spec.whatwg.org/#headers-class) class defined in the [fetch spec](https://fetch.spec.whatwg.org/) has been implemented slightly differently across browser vendors at the time of writing (Feb 2017).
 
 This package intends to provide a wrapper for the `Headers` class to ensure a consistent API and provides headers parsing from CLRF-delimited strings.
 
 This package is written in TypeScript, but is designed to be used just as easily by JavaScript projects.
 
-[![build status](https://secure.travis-ci.org/improbable-eng/js-browser-headers.png)](https://travis-ci.org/improbable-eng/js-browser-headers)
 
 ## Installation
 via npm:
