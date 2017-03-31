@@ -6,3 +6,4 @@ karma.conf.js
 release.sh
 run-karma.sh
 sauce_connect.log
+~
