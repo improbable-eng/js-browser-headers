@@ -79,10 +79,10 @@ export class BrowserHeaders {
     const pairs = str.split("\r\n");
     for (let i = 0; i < pairs.length; i++) {
       const p = pairs[i];
-      const index = p.indexOf(": ");
+      const index = p.indexOf(":");
       if (index > 0) {
-        const key = p.substring(0, index);
-        const value = p.substring(index + 2);
+        const key = p.substring(0, index).trim();
+        const value = p.substring(index + 1).trim();
         this.append(key, value);
       }
     }
