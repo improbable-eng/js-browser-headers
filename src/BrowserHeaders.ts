@@ -1,5 +1,4 @@
 import { normalizeName, normalizeValue, getHeaderValues, getHeaderKeys, splitHeaderValue } from "./util";
-import { WindowHeaders } from "./WindowHeaders";
 
 export interface Map<K, V> {
   clear(): void;
@@ -37,9 +36,9 @@ export class BrowserHeaders {
 
     if (init) {
       if (typeof Headers !== "undefined" && init instanceof Headers) {
-        const keys = getHeaderKeys(init as WindowHeaders);
+        const keys = getHeaderKeys(init as Headers);
         keys.forEach(key => {
-          const values = getHeaderValues(init as WindowHeaders, key);
+          const values = getHeaderValues(init as Headers, key);
           values.forEach(value => {
             if (options.splitValues) {
               this.append(key, splitHeaderValue(value));
@@ -166,9 +165,9 @@ export class BrowserHeaders {
       }, this);
   }
   
-  toHeaders(): WindowHeaders {
+  toHeaders(): Headers {
     if (typeof Headers !== "undefined") {
-      const headers: WindowHeaders = new Headers();
+      const headers = new Headers();
       this.forEach((key, values) => {
         values.forEach(value => {
           headers.append(key, value);
@@ -184,5 +183,5 @@ export class BrowserHeaders {
 export namespace BrowserHeaders {
   export type HeaderObject = {[key: string]: string|string[]};
   export type HeaderMap = Map<string, string|string[]>;
-  export type ConstructorArg = HeaderObject | HeaderMap | BrowserHeaders | WindowHeaders | string;
+  export type ConstructorArg = HeaderObject | HeaderMap | BrowserHeaders | Headers | string;
 }
