@@ -1,74 +1,32 @@
 // Karma configuration
-// Generated on Wed Feb 17 2016 15:48:21 GMT+0000 (GMT)
+
+function browser(browserName, browserVersion, os, osVersion) {
+  return {
+    base: 'BrowserStack',
+    browser: browserName,
+    browser_version: browserVersion,
+    os: os,
+    os_version: osVersion
+  };
+}
 
 module.exports = function(config) {
 
-  // Browsers to run on Sauce Labs
-  // Check out https://saucelabs.com/platforms for all browser/OS combos
+  // Browsers to run on BrowserStack
   var customLaunchers = {
-    'SL_Safari_Latest': {
-      base: 'SauceLabs',
-      browserName: 'safari',
-      platform: 'OS X 10.11'
-    },
-    'SL_Safari_8': {
-      base: 'SauceLabs',
-      browserName: 'safari',
-      platform: 'OS X 10.10',
-      version: '8',
-    },
-    'SL_Chrome_Latest': {
-      base: 'SauceLabs',
-      browserName: 'chrome',
-      platform: 'linux'
-    },
-    'SL_Chrome_48': {
-      base: 'SauceLabs',
-      browserName: 'chrome',
-      platform: 'OS X 10.10',
-      version: '48',
-    },
-    'SL_Firefox_Latest': {
-      base: 'SauceLabs',
-      browserName: 'firefox',
-      platform: 'linux'
-    },
-    'SL_Opera_12': {
-      base: 'SauceLabs',
-      browserName: 'opera',
-      platform: 'Windows 7',
-      version: '12'
-    },
-    'SL_Edge': {
-      base: 'SauceLabs',
-      browserName: 'microsoftedge',
-      platform: 'Windows 10'
-    },
-    'SL_IE_10': {
-      base: 'SauceLabs',
-      browserName: 'internet explorer',
-      platform: 'Windows 7',
-      version: '10'
-    },
-    'SL_IE_9': {
-      base: 'SauceLabs',
-      browserName: 'internet explorer',
-      platform: 'Windows 7',
-      version: '9'
-    }
+    'Safari_9': browser('safari', '9.1','OS X', 'El Capitan'),
+    'Safari_8': browser('safari', '8','OS X', 'Yosemite'),
+    'Chrome_57': browser('chrome', '57','OS X', 'Sierra'),
+    'Chrome_48': browser('chrome', '48','OS X', 'Yosemite'),
+    'Firefox_57': browser('firefox', '57','OS X', 'Sierra'),
+    'Opera_40': browser('opera', '40', 'Windows', '7'),
+    'Edge': browser('edge', '14','Windows', '10'),
+    'IE_10': browser('ie', '10','Windows', '7'),
+    'IE_9': browser('ie', '9','Windows', '7')
   };
 
-  var reporters = ['dots'];
-  var browsers = [];
-  var singlerun = false;
-  var concurrency = Infinity;
-
-  if (process.env.SAUCE_USERNAME) {
-    reporters.push('saucelabs');
-    Array.prototype.push.apply(browsers, Object.keys(customLaunchers));
-    singlerun = true;
-    concurrency = 4;
-  }
+  const useBrowserStack = process.env.BROWSER_STACK_USERNAME !== undefined;
+  const browsers = useBrowserStack ? Object.keys(customLaunchers) : [];
 
   config.set({
 
@@ -80,13 +38,9 @@ module.exports = function(config) {
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['jasmine'],
 
-    sauceLabs: {
-      recordScreenshots: false,
-      connectOptions: {
-        port: 5757,
-        logfile: 'sauce_connect.log'
-      },
-      public: 'public'
+    browserStack: {
+      forcelocal: true,
+      project: "js_browser_headers-" + (process.env.TRAVIS_BRANCH || "dev"),
     },
 
     // list of files / patterns to load in the browser
@@ -108,7 +62,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: reporters,
+    reporters: ['dots'],
 
     // web server port
     port: 9876,
@@ -129,10 +83,10 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: singlerun,
+    singleRun: useBrowserStack,
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: concurrency
+    concurrency: 2
   })
 };
