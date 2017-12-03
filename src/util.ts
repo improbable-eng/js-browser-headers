@@ -25,7 +25,8 @@ export function normalizeValue(value: any): string {
 
 // getHeadersValues abstracts the difference between get() and getAll() between browsers and always returns an array
 /** @internal */
-export function getHeaderValues(headers: WindowHeaders, key: string): string[] {
+export function getHeaderValues(headersAsNative: Headers, key: string): string[] {
+  const headers =  toWindowHeaders(headersAsNative);
   if (headers instanceof Headers && headers.getAll) {
     // If the headers instance has a getAll function then it will return an array
     return headers.getAll(key);
@@ -40,9 +41,15 @@ export function getHeaderValues(headers: WindowHeaders, key: string): string[] {
   return getValue;
 }
 
+// toWindowHeaders casts the native browser class to an interface that includes functions of different browser implementations
+function toWindowHeaders(headersAsNative: Headers): WindowHeaders {
+  return headersAsNative as any as WindowHeaders;
+}
+
 // getHeaderKeys returns an array of keys in a headers instance
 /** @internal */
-export function getHeaderKeys(headers: WindowHeaders): string[] {
+export function getHeaderKeys(headersAsNative: Headers): string[] {
+  const headers =  toWindowHeaders(headersAsNative);
   const asMap: {[key: string]: boolean} = {};
   const keys: string[] = [];
 

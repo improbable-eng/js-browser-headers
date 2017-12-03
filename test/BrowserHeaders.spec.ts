@@ -275,6 +275,18 @@ describe("browser-headers", () => {
           ok(keyAString === "one, Two" || keyAString === "one,Two");
           deepEqual(getHeaderValues(headers, "keyB"), ["three"]);
         });
+
+        it("should be compatible with fetch", () => {
+          const browserHeaders = new BrowserHeaders({
+            "keyA": ["one", "Two"],
+            "keyB": "three"
+          });
+          const headers = browserHeaders.toHeaders();
+          const promise = fetch("http://127.0.0.1", {
+            headers: headers,
+          });
+          ok(promise, "promise is returned");
+        });
       });
     });
   }
