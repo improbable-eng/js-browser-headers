@@ -2,6 +2,7 @@
 > Compatibility Layer for the Headers class
 
 [![Master Build](https://travis-ci.org/improbable-eng/js-browser-headers.svg?branch=master)](https://travis-ci.org/improbable-eng/js-browser-headers)
+![BrowserStack Status](https://www.browserstack.com/automate/badge.svg?badge_key=MVZzVGFiVXpFRjFjRmZ2SUpJaWlGam9Xa2c0R1B6MnVBV25aZm43cDZtUT0tLXZaMDdRR0pVbVFyRVBmd0p1TUNlZVE9PQ==--8b1eb510ef6bde3d6d89b2d65b033a9030f75f6f%)
 [![NPM](https://img.shields.io/npm/v/browser-headers.svg)](https://www.npmjs.com/package/browser-headers)
 [![Apache 2.0 License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 ![quality: beta](https://img.shields.io/badge/quality-beta-yellow.svg)
