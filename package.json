@@ -26,8 +26,8 @@
     "babel-preset-es2015": "^6.13.2",
     "jasmine-core": "^2.4.1",
     "karma": "^1.2.0",
+    "karma-browserstack-launcher": "^1.3.0",
     "karma-jasmine": "^1.0.2",
-    "karma-sauce-launcher": "^1.0.0",
     "karma-sourcemap-loader": "^0.3.7",
     "ts-loader": "^2.0.1",
     "tslint": "^4.4.2",
@@ -36,6 +36,8 @@
   },
   "dependencies": {},
   "browserify": {
-    "transform": ["babelify"]
+    "transform": [
+      "babelify"
+    ]
   }
 }
