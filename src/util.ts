@@ -34,7 +34,7 @@ export function getHeaderValues(headersAsNative: Headers, key: string): string[]
 
   // There is no getAll() function so get *should* return an array
   const getValue = headers.get(key);
-  if (getValue && typeof getValue === "string") {
+  if (typeof getValue === "string") {
     // some .get() implementations return a string even though they don't have a .getAll() - notably Microsoft Edge
     return [getValue];
   }
