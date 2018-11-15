@@ -4,3 +4,4 @@ build/
 .idea/
 npm-debug*
 sauce_connect.log
+dist/

@@ -1,5 +1,5 @@
 import { WindowHeaders } from "./WindowHeaders";
-import { iterateHeaders, iterateHeadersKeys } from "./js/iterateHeaders";
+import { iterateHeaders, iterateHeadersKeys } from "./iterateHeaders";
 
 // Declare that there is a global property named "Headers" - this might not be present at runtime
 declare const Headers: any;

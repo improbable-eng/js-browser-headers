@@ -21,7 +21,7 @@ declare const Map: MapConstructor;
 // Declare that there is a global property named "Headers" - this might not be present at runtime
 declare const Headers: any;
 
-// isBrowserHeaders is used to check if an argument is an instance of BrowserHeaders from another 
+// isBrowserHeaders is used to check if an argument is an instance of BrowserHeaders from another
 // version of the dependency.
 function isBrowserHeaders(arg: any): arg is BrowserHeaders {
   return typeof arg === "object" && typeof arg.headersMap === "object" && typeof arg.forEach === "function"
@@ -164,7 +164,7 @@ export class BrowserHeaders {
         callback(key, this.headersMap[key]);
       }, this);
   }
-  
+
   toHeaders(): Headers {
     if (typeof Headers !== "undefined") {
       const headers = new Headers();
