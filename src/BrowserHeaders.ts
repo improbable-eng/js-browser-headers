@@ -180,7 +180,7 @@ export class BrowserHeaders {
   }
 }
 
-export namespace BrowserHeaders {
+export declare namespace BrowserHeaders {
   export type HeaderObject = {[key: string]: string|string[]};
   export type HeaderMap = Map<string, string|string[]>;
   export type ConstructorArg = HeaderObject | HeaderMap | BrowserHeaders | Headers | string;

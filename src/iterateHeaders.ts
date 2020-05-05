@@ -10,7 +10,7 @@ export function iterateHeaders(headers: WindowHeaders, callback: (entry: string[
 }
 
 export function iterateHeadersKeys(headers: WindowHeaders, callback: (key: string) => void): void {
-  const iterator = headers.keys();
+  const iterator = (headers as any).keys();
   let entry = iterator.next();
   while (!entry.done) {
     callback(entry.value);
