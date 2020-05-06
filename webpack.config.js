@@ -44,18 +44,11 @@ module.exports = [{
     devtool: 'source-map',
     module: {
       rules: [{
-          test: /\.js$/,
-          include: /src|test|node_modules/,
-          loader: 'babel-loader?cacheDirectory'
-        },
-        {
-          test: /\.ts$/,
-          include: /src|test|node_modules/,
-          loader: "babel-loader?cacheDirectory!ts-loader"
-        }
-      ]
+        test: /\.(ts|js)x?$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+      }],
     },
-    plugins: [],
     resolve: {
       extensions: [".ts", ".js"]
     }

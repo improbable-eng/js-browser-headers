@@ -22,7 +22,7 @@ $ npm install browser-headers
 ```
 
 ## Browser Support
-This library is tested against Chrome, Safari, Firefox, Opera, Edge, IE 10 and IE 9.
+This library is tested against Chrome, Safari, Firefox, Opera, Edge and IE 10. It has been tested to support IE 9, but automated testing is no longer included due to compatibility.
 
 ## API
 

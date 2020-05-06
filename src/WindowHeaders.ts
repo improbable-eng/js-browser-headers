@@ -4,7 +4,7 @@ export declare interface WindowHeaders {
   getAll(key: string): string[]; // some browsers don't have a .getAll
   has(key: string): boolean;
   delete(key: string): void;
-  keys(): any;
+  keys(): IterableIterator<string>;
   entries(): any;
   forEach(callback: (value: string, key: string) => void): any;
   append(key: string, value: string): void;

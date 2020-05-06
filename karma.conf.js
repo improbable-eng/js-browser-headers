@@ -20,9 +20,9 @@ module.exports = function(config) {
     'Chrome_48': browser('chrome', '48','OS X', 'Yosemite'),
     'Firefox_57': browser('firefox', '57','OS X', 'Sierra'),
     'Opera_40': browser('opera', '40', 'Windows', '7'),
-    'Edge': browser('edge', '14','Windows', '10'),
-    'IE_10': browser('ie', '10','Windows', '7'),
-    'IE_9': browser('ie', '9','Windows', '7')
+    'Edge_81': browser('edge', '81','Windows', '10'),
+    'Edge_14': browser('edge', '14','Windows', '10'),
+    'IE_10': browser('ie', '10','Windows', '7')
   };
 
   const useBrowserStack = process.env.BROWSER_STACK_USERNAME !== undefined;
